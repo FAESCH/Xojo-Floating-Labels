@@ -21,7 +21,7 @@ A modern WebSDK-based custom control for [Xojo Web 2.0](https://www.xojo.com/pro
 
 ## Demo
 
-![Floating Label TextField Demo](docs/floating-label-demo.gif)
+![Floating Label TextField Demo](_Docs/FloatingLabelTextField.gif)
 
 ## Requirements
 
