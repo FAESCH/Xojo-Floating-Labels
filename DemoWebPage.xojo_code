@@ -60,6 +60,33 @@ Begin WebPage DemoWebPage
       Width           =   150
       _mPanelIndex    =   -1
    End
+   Begin FloatingLabelTextArea FloatingLabelTextArea1
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      Height          =   112
+      Index           =   -2147483648
+      Indicator       =   ""
+      LabelText       =   "Description"
+      Left            =   33
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      PanelIndex      =   0
+      Scope           =   2
+      TabIndex        =   4
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   85
+      Value           =   ""
+      Visible         =   True
+      Width           =   150
+      _mPanelIndex    =   -1
+   End
 End
 #tag EndWebPage
 

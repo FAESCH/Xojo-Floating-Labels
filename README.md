@@ -1,4 +1,4 @@
-# Xojo Floating Label TextField (Web 2.0)
+# Xojo Floating Label TextField and TextArea (Web 2.0)
 
 A modern WebSDK-based custom control for [Xojo Web 2.0](https://www.xojo.com/products/web/) using native Bootstrap 5 floating labels.
 
@@ -15,13 +15,14 @@ A modern WebSDK-based custom control for [Xojo Web 2.0](https://www.xojo.com/pro
 
 ## Usage
 
-1. Drag the `FloatingLabelTextField` class into your Xojo Web project.
+1. Drag the `FloatingLabelTextField` / `FloatingLabelTextArea` class into your Xojo Web project.
 2. Use it like a normal text field, bind events such as `TextChanged`.
 3. Customize label and value via the `LabelText` and `Value` properties.
 
 ## Demo
 
 ![Floating Label TextField Demo](_Docs/FloatingLabelTextField.gif)
+![Floating Label TextArea Demo](_Docs/FloatingLabelTextArea.gif)
 
 ## Requirements
 
