@@ -87,12 +87,103 @@ Begin WebPage DemoWebPage
       Width           =   150
       _mPanelIndex    =   -1
    End
+   Begin WebListBox EventsListBox
+      AllowRowReordering=   False
+      ColumnCount     =   1
+      ColumnWidths    =   ""
+      ControlID       =   ""
+      CSSClasses      =   ""
+      DefaultRowHeight=   49
+      Enabled         =   True
+      GridLineStyle   =   3
+      HasBorder       =   True
+      HasHeader       =   False
+      HeaderHeight    =   0
+      Height          =   360
+      HighlightSortedColumn=   True
+      Index           =   -2147483648
+      Indicator       =   0
+      InitialValue    =   ""
+      LastAddedRowIndex=   0
+      LastColumnIndex =   0
+      LastRowIndex    =   0
+      Left            =   217
+      LockBottom      =   True
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      NoRowsMessage   =   ""
+      PanelIndex      =   0
+      ProcessingMessage=   ""
+      RowCount        =   0
+      RowSelectionType=   1
+      Scope           =   2
+      SearchCriteria  =   ""
+      SelectedRowColor=   &c0d6efd
+      SelectedRowIndex=   0
+      TabIndex        =   5
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   20
+      Visible         =   True
+      Width           =   363
+      _mPanelIndex    =   -1
+   End
 End
 #tag EndWebPage
 
 #tag WindowCode
 #tag EndWindowCode
 
+#tag Events FloatingLabelTextField1
+	#tag Event
+		Sub FocusReceived()
+		  EventsListBox.AddRowAt(0, me.Name + " " + CurrentMethodName)
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub FocusLost()
+		  EventsListBox.AddRowAt(0, me.Name + " " + CurrentMethodName)
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub EnterPressed()
+		  EventsListBox.AddRowAt(0, me.Name + " " + CurrentMethodName)
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub TextChanged(Value as String)
+		  EventsListBox.AddRowAt(0, me.Name + " " + CurrentMethodName)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events FloatingLabelTextArea1
+	#tag Event
+		Sub FocusReceived()
+		  EventsListBox.AddRowAt(0, me.Name + " " + CurrentMethodName)
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub FocusLost()
+		  EventsListBox.AddRowAt(0, me.Name + " " + CurrentMethodName)
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub TextChanged(Value as String)
+		  EventsListBox.AddRowAt(0, me.Name + " " + CurrentMethodName)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events EventsListBox
+	#tag Event
+		Sub Opening()
+		  Me.Style.FontSize = 8
+		End Sub
+	#tag EndEvent
+#tag EndEvents
 #tag ViewBehavior
 	#tag ViewProperty
 		Name="PanelIndex"

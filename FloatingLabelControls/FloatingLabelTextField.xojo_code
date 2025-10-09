@@ -76,6 +76,15 @@ Inherits WebSDKUIControl
 		  Case "EnterPressed"
 		    RaiseEvent EnterPressed
 		    Return True
+		    
+		  Case "FocusReceived"
+		    RaiseEvent FocusReceived
+		    Return True
+		    
+		  Case "FocusLost"
+		    RaiseEvent FocusLost
+		    Return True
+		    
 		  End Select
 		  
 		  Return False
@@ -127,7 +136,7 @@ Inherits WebSDKUIControl
 		  // your Xojo installation folder for more information about
 		  // namespaces.
 		  
-		    Return "FAESCH.FloatingLabel.FloatingLabelTextField"
+		  Return "FAESCH.FloatingLabel.FloatingLabelTextField"
 		End Function
 	#tag EndEvent
 
@@ -218,6 +227,14 @@ Inherits WebSDKUIControl
 	#tag EndHook
 
 	#tag Hook, Flags = &h0
+		Event FocusLost()
+	#tag EndHook
+
+	#tag Hook, Flags = &h0
+		Event FocusReceived()
+	#tag EndHook
+
+	#tag Hook, Flags = &h0
 		Event TextChanged(Value as String)
 	#tag EndHook
 
@@ -275,7 +292,7 @@ Inherits WebSDKUIControl
 	#tag Constant, Name = kCSSCode, Type = String, Dynamic = False, Default = \".form-floating {\n  width: 100%;\n}\n\n.form-floating > input {\n  height: calc(3.5rem + 2px);\n  padding: 1rem .75rem;\n  font-size: 1rem;\n  line-height: 1.25;\n}\n\n.form-floating > label {\n  position: absolute;\n  top: 0;\n  left: 0; /* <- vorher: 0.75rem */\n  height: 100%;\n  padding: 1rem .75rem;\n  pointer-events: none;\n  transition: all 0.1s ease-in-out;\n  color: #6c757d;\n}\n\n.form-floating > input:focus ~ label\x2C\n.form-floating > input:not(:placeholder-shown) ~ label {\n  transform: scale(0.85) translateY(-0.75rem);\n  color: #495057;\n}", Scope = Private
 	#tag EndConstant
 
-	#tag Constant, Name = kJavaScriptCode, Type = String, Dynamic = False, Default = \"var FAESCH \x3D FAESCH || {};\nFAESCH.FloatingLabel \x3D FAESCH.FloatingLabel || {};\n\n(function(ns) {\n  class FloatingLabelTextField extends XojoWeb.XojoVisualControl {\n    constructor(id\x2C events) {\n      super(id\x2C events);\n      const el \x3D this.DOMElement();\n\n      this.inputGroup \x3D document.createElement(\"div\");\n      this.inputGroup.className \x3D \"form-floating\";\n\n      this.inputEl \x3D document.createElement(\"input\");\n      this.inputEl.type \x3D \"text\";\n      this.inputEl.className \x3D \"form-control\";\n      this.inputEl.id \x3D id + \"_input\";\n      this.inputEl.placeholder \x3D \" \";\n\n      this.labelEl \x3D document.createElement(\"label\");\n      this.labelEl.setAttribute(\"for\"\x2C this.inputEl.id);\n      this.labelEl.innerText \x3D \"Label\";\n\n      this.inputEl.addEventListener(\"input\"\x2C () \x3D> {\n        this.triggerServerEvent(\"TextChanged\"\x2C { value: this.inputEl.value });\n      });\n\n      this.inputEl.addEventListener(\"keydown\"\x2C (event) \x3D> {\n        if (event.key \x3D\x3D\x3D \"Enter\") {\n          this.triggerServerEvent(\"EnterPressed\");\n        }\n      });\n\n      this.inputGroup.appendChild(this.inputEl);\n      this.inputGroup.appendChild(this.labelEl);\n      el.appendChild(this.inputGroup);\n    }\n\n    updateControl(data) {\n      super.updateControl(data);\n      const json \x3D JSON.parse(data);\n\n      if (typeof json.value !\x3D\x3D \"undefined\") {\n        this.inputEl.value \x3D json.value;\n      }\n\n      if (typeof json.placeholder !\x3D\x3D \"undefined\") {\n        this.inputEl.placeholder \x3D json.placeholder;\n      }\n\n      if (typeof json.labelText !\x3D\x3D \"undefined\") {\n        this.labelEl.innerText \x3D decodeURIComponent(atob(json.labelText));\n      }\n\n      if (typeof json.enabled !\x3D\x3D \"undefined\") {\n        this.inputEl.disabled \x3D !json.enabled;\n      }\n\n      this.refresh();\n    }\n\n    render() {\n      super.render();\n      const el \x3D this.DOMElement();\n      if (!el) return;\n\n      this.setAttributes();\n      this.applyUserStyle();\n      this.applyTooltip(el);\n    }\n  }\n\n  ns.FloatingLabelTextField \x3D FloatingLabelTextField;\n})(FAESCH.FloatingLabel);", Scope = Private
+	#tag Constant, Name = kJavaScriptCode, Type = String, Dynamic = False, Default = \"var FAESCH \x3D FAESCH || {};\nFAESCH.FloatingLabel \x3D FAESCH.FloatingLabel || {};\n\n(function(ns) {\n  class FloatingLabelTextField extends XojoWeb.XojoVisualControl {\n    constructor(id\x2C events) {\n      super(id\x2C events);\n      const el \x3D this.DOMElement();\n\n      this.inputGroup \x3D document.createElement(\"div\");\n      this.inputGroup.className \x3D \"form-floating\";\n\n      this.inputEl \x3D document.createElement(\"input\");\n      this.inputEl.type \x3D \"text\";\n      this.inputEl.className \x3D \"form-control\";\n      this.inputEl.id \x3D id + \"_input\";\n      this.inputEl.placeholder \x3D \" \";\n\n      this.labelEl \x3D document.createElement(\"label\");\n      this.labelEl.setAttribute(\"for\"\x2C this.inputEl.id);\n      this.labelEl.innerText \x3D \"Label\";\n\n      // --- Event: Text Changed\n      this.inputEl.addEventListener(\"input\"\x2C () \x3D> {\n        this.triggerServerEvent(\"TextChanged\"\x2C { value: this.inputEl.value });\n      });\n\n      // --- Event: Enter Key Pressed\n      this.inputEl.addEventListener(\"keydown\"\x2C (event) \x3D> {\n        if (event.key \x3D\x3D\x3D \"Enter\") {\n          this.triggerServerEvent(\"EnterPressed\");\n        }\n      });\n\n      // (Removed focus and blur event listeners)\n\n      this.inputGroup.appendChild(this.inputEl);\n      this.inputGroup.appendChild(this.labelEl);\n      el.appendChild(this.inputGroup);\n    }\n\n    updateControl(data) {\n      super.updateControl(data);\n      const json \x3D JSON.parse(data);\n\n      if (typeof json.value !\x3D\x3D \"undefined\") {\n        this.inputEl.value \x3D json.value;\n      }\n\n      if (typeof json.placeholder !\x3D\x3D \"undefined\") {\n        this.inputEl.placeholder \x3D json.placeholder;\n      }\n\n      if (typeof json.labelText !\x3D\x3D \"undefined\") {\n        this.labelEl.innerText \x3D decodeURIComponent(atob(json.labelText));\n      }\n\n      if (typeof json.enabled !\x3D\x3D \"undefined\") {\n        this.inputEl.disabled \x3D !json.enabled;\n      }\n\n      this.refresh();\n    }\n\n    render() {\n      super.render();\n      const el \x3D this.DOMElement();\n      if (!el) return;\n\n      // Optional: Match height to layout-defined size\n      this.inputEl.style.height \x3D el.offsetHeight + \"px\";\n\n      this.setAttributes();\n      this.applyUserStyle();\n      this.applyTooltip(el);\n    }\n  }\n\n  ns.FloatingLabelTextField \x3D FloatingLabelTextField;\n})(FAESCH.FloatingLabel);", Scope = Private
 	#tag EndConstant
 
 

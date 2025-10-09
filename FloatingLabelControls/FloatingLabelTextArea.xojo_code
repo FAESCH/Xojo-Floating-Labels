@@ -72,6 +72,15 @@ Inherits WebSDKUIControl
 		    Value = parameters.Value("value")
 		    RaiseEvent TextChanged(Value)
 		    Return True
+		    
+		  Case "FocusReceived"
+		    RaiseEvent FocusReceived
+		    Return True
+		    
+		  Case "FocusLost"
+		    RaiseEvent FocusLost
+		    Return True
+		    
 		  End Select
 		  
 		  Return False
@@ -153,7 +162,7 @@ Inherits WebSDKUIControl
 		    CSSCodeWebFile.Session = Nil
 		    
 		    // Add a file name and the proper mime type.
-		    CSSCodeWebFile.Filename = "FloatingLabelTextField.css"
+		    CSSCodeWebFile.Filename = "FloatingLabelAreaField.css"
 		    CSSCodeWebFile.MIMEType = "text/css"
 		  End If
 		  
@@ -195,7 +204,7 @@ Inherits WebSDKUIControl
 		    JavaScriptCodeWebFile.Session = Nil
 		    
 		    // Add a file name and the proper mime type.
-		    JavaScriptCodeWebFile.Filename = "FloatingLabelTextField.js"
+		    JavaScriptCodeWebFile.Filename = "FloatingLabelAreaField.js"
 		    JavaScriptCodeWebFile.MIMEType = "application/javascript"
 		  End If
 		  
@@ -208,6 +217,14 @@ Inherits WebSDKUIControl
 		End Function
 	#tag EndEvent
 
+
+	#tag Hook, Flags = &h0
+		Event FocusLost()
+	#tag EndHook
+
+	#tag Hook, Flags = &h0
+		Event FocusReceived()
+	#tag EndHook
 
 	#tag Hook, Flags = &h0
 		Event TextChanged(Value as String)
@@ -267,7 +284,7 @@ Inherits WebSDKUIControl
 	#tag Constant, Name = kCSSCode, Type = String, Dynamic = False, Default = \".form-floating {\n  width: 100%;\n}\n\n.form-floating > textarea {\n  height: 100%;\n  padding: 1rem .75rem;\n  font-size: 1rem;\n  line-height: 1.25;\n}\n\n.form-floating > label {\n  position: absolute;\n  top: 0;\n  left: 0;\n  height: 100%;\n  padding: 1rem .75rem;\n  pointer-events: none;\n  transition: all 0.1s ease-in-out;\n  color: #6c757d;\n}\n\n.form-floating > textarea:focus ~ label\x2C\n.form-floating > textarea:not(:placeholder-shown) ~ label {\n  transform: scale(0.85) translateY(-0.75rem);\n  color: #495057;\n}", Scope = Private
 	#tag EndConstant
 
-	#tag Constant, Name = kJavaScriptCode, Type = String, Dynamic = False, Default = \"var FAESCH \x3D FAESCH || {};\nFAESCH.FloatingLabel \x3D FAESCH.FloatingLabel || {};\n\n(function(ns) {\n  class FloatingLabelTextArea extends XojoWeb.XojoVisualControl {\n    constructor(id\x2C events) {\n      super(id\x2C events);\n      const el \x3D this.DOMElement();\n\n      this.inputGroup \x3D document.createElement(\"div\");\n      this.inputGroup.className \x3D \"form-floating\";\n\n      this.textAreaEl \x3D document.createElement(\"textarea\");\n      this.textAreaEl.className \x3D \"form-control\";\n      this.textAreaEl.id \x3D id + \"_textarea\";\n      this.textAreaEl.placeholder \x3D \" \";\n\n      this.labelEl \x3D document.createElement(\"label\");\n      this.labelEl.setAttribute(\"for\"\x2C this.textAreaEl.id);\n      this.labelEl.innerText \x3D \"Label\";\n\n      this.textAreaEl.addEventListener(\"input\"\x2C () \x3D> {\n        this.triggerServerEvent(\"TextChanged\"\x2C { value: this.textAreaEl.value });\n      });\n\n      this.inputGroup.appendChild(this.textAreaEl);\n      this.inputGroup.appendChild(this.labelEl);\n      el.appendChild(this.inputGroup);\n    }\n\n    updateControl(data) {\n      super.updateControl(data);\n      const json \x3D JSON.parse(data);\n\n      if (typeof json.value !\x3D\x3D \"undefined\") {\n        this.textAreaEl.value \x3D json.value;\n      }\n\n      if (typeof json.placeholder !\x3D\x3D \"undefined\") {\n        this.textAreaEl.placeholder \x3D json.placeholder;\n      }\n\n      if (typeof json.labelText !\x3D\x3D \"undefined\") {\n        this.labelEl.innerText \x3D decodeURIComponent(atob(json.labelText));\n      }\n\n      if (typeof json.enabled !\x3D\x3D \"undefined\") {\n        this.textAreaEl.disabled \x3D !json.enabled;\n      }\n\n      this.refresh();\n    }\n\n    render() {\n      super.render();\n      const el \x3D this.DOMElement();\n      if (!el) return;\n\n      // Set the height of the textarea to match the control\'s height\n      this.textAreaEl.style.height \x3D el.offsetHeight + \"px\";\n\n      this.setAttributes();\n      this.applyUserStyle();\n      this.applyTooltip(el);\n    }\n  }\n\n  ns.FloatingLabelTextArea \x3D FloatingLabelTextArea;\n})(FAESCH.FloatingLabel);", Scope = Private
+	#tag Constant, Name = kJavaScriptCode, Type = String, Dynamic = False, Default = \"var FAESCH \x3D FAESCH || {};\nFAESCH.FloatingLabel \x3D FAESCH.FloatingLabel || {};\n\n(function(ns) {\n  class FloatingLabelTextArea extends XojoWeb.XojoVisualControl {\n    constructor(id\x2C events) {\n      super(id\x2C events);\n      const el \x3D this.DOMElement();\n\n      this.inputGroup \x3D document.createElement(\"div\");\n      this.inputGroup.className \x3D \"form-floating\";\n\n      this.textAreaEl \x3D document.createElement(\"textarea\");\n      this.textAreaEl.className \x3D \"form-control\";\n      this.textAreaEl.id \x3D id + \"_textarea\";\n      this.textAreaEl.placeholder \x3D \" \";\n\n      this.labelEl \x3D document.createElement(\"label\");\n      this.labelEl.setAttribute(\"for\"\x2C this.textAreaEl.id);\n      this.labelEl.innerText \x3D \"Label\";\n\n      // --- Event: Text Changed\n      this.textAreaEl.addEventListener(\"input\"\x2C () \x3D> {\n        this.triggerServerEvent(\"TextChanged\"\x2C { value: this.textAreaEl.value });\n      });\n\n      // (Removed focus and blur events)\n\n      this.inputGroup.appendChild(this.textAreaEl);\n      this.inputGroup.appendChild(this.labelEl);\n      el.appendChild(this.inputGroup);\n    }\n\n    updateControl(data) {\n      super.updateControl(data);\n      const json \x3D JSON.parse(data);\n\n      if (typeof json.value !\x3D\x3D \"undefined\") {\n        this.textAreaEl.value \x3D json.value;\n      }\n\n      if (typeof json.placeholder !\x3D\x3D \"undefined\") {\n        this.textAreaEl.placeholder \x3D json.placeholder;\n      }\n\n      if (typeof json.labelText !\x3D\x3D \"undefined\") {\n        this.labelEl.innerText \x3D decodeURIComponent(atob(json.labelText));\n      }\n\n      if (typeof json.enabled !\x3D\x3D \"undefined\") {\n        this.textAreaEl.disabled \x3D !json.enabled;\n      }\n\n      this.refresh();\n    }\n\n    render() {\n      super.render();\n      const el \x3D this.DOMElement();\n      if (!el) return;\n\n      this.textAreaEl.style.height \x3D el.offsetHeight + \"px\";\n\n      this.setAttributes();\n      this.applyUserStyle();\n      this.applyTooltip(el);\n    }\n  }\n\n  ns.FloatingLabelTextArea \x3D FloatingLabelTextArea;\n})(FAESCH.FloatingLabel);", Scope = Private
 	#tag EndConstant
 
 
